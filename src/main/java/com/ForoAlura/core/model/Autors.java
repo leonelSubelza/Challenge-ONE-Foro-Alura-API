@@ -12,15 +12,21 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "cursos")
 @Entity
-public class Course {
+@Table(name = "autores")
+public class Autors {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
-    private String categoria;
+    private String email;
+    private String contrasena;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "curso", cascade = CascadeType.ALL)
+    //un usuario tiene muchas respuestas hechas
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "autor", cascade = CascadeType.ALL)
+    private List<Response> respuestas;
+
+    //un usuario tiene muchas publicaciones hechas
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "autor", cascade = CascadeType.ALL)
     private List<Topic> topicos;
 }

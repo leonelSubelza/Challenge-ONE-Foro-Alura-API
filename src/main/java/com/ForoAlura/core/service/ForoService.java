@@ -1,8 +1,8 @@
 package com.ForoAlura.core.service;
 
-import com.ForoAlura.core.dto.TopicRegisterDTO;
-import com.ForoAlura.core.dto.TopicRegisterResponse;
-import com.ForoAlura.core.dto.TopicResponseDTO;
+import com.ForoAlura.core.dto.topic.TopicRegisterDTO;
+import com.ForoAlura.core.dto.topic.TopicRegisterResponse;
+import com.ForoAlura.core.dto.topic.TopicResponseDTO;
 import com.ForoAlura.core.model.Topic;
 import com.ForoAlura.core.repository.IForoRepository;
 import org.modelmapper.ModelMapper;
@@ -48,6 +48,7 @@ public class ForoService implements IForoService {
     @Override
     public Page<TopicResponseDTO> findAll(Pageable pageable) {
         Page<Topic> topicsPage = iForoRepository.findAllByOrderByFechaCreacionAsc(pageable);
+//        Page<Topic> topicsPage = iForoRepository.findAll(pageable);
         return topicsPage.map(topicPage -> this.modelMapper.map(topicPage,TopicResponseDTO.class));
     }
 

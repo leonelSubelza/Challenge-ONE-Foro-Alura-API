@@ -1,8 +1,8 @@
-package com.ForoAlura.core.dto;
+package com.ForoAlura.core.dto.topic;
 
 import com.ForoAlura.core.model.Course;
 import com.ForoAlura.core.model.StatusTopico;
-import com.ForoAlura.core.model.User;
+import com.ForoAlura.core.model.Autors;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
@@ -15,7 +15,7 @@ public record TopicRegisterResponse(
         LocalDateTime fechaCreacion,
         @Enumerated(EnumType.STRING)
         StatusTopico status,
-        User autor,
+        Autors autor,
         Course curso
 ) {
 }

@@ -1,9 +1,8 @@
 package com.ForoAlura.core.controller;
 
-import com.ForoAlura.core.dto.TopicRegisterDTO;
-import com.ForoAlura.core.dto.TopicRegisterResponse;
-import com.ForoAlura.core.dto.TopicResponseDTO;
-import com.ForoAlura.core.model.Topic;
+import com.ForoAlura.core.dto.topic.TopicRegisterDTO;
+import com.ForoAlura.core.dto.topic.TopicRegisterResponse;
+import com.ForoAlura.core.dto.topic.TopicResponseDTO;
 import com.ForoAlura.core.service.IForoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
-package com.ForoAlura.core.dto;
+package com.ForoAlura.core.dto.topic;
 
 import com.ForoAlura.core.model.Course;
-import com.ForoAlura.core.model.User;
+import com.ForoAlura.core.model.Autors;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -19,7 +19,7 @@ public class TopicRegisterDTO {
     @NotBlank
     private String mensaje;
     @NotNull
-    private User autor;
+    private Autors autor;
     @NotNull
     private Course curso;
 }

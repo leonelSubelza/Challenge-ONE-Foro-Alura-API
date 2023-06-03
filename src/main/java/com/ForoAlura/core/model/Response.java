@@ -1,5 +1,8 @@
 package com.ForoAlura.core.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,14 +18,25 @@ import java.time.LocalDateTime;
 @Table(name = "respuestas")
 @Entity
 public class Response {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String mensaje;
+    private LocalDateTime fechaCreacion = LocalDateTime.now();
+    private Boolean solucion = false;
+
+    //muchas respuestas pertenecen a un solo autor
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
+    @JsonIgnore
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Autors autor;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)//muchas respuestas pertenecen a un solo topico
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIgnore
+//    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
     private Topic topico;
 
-    private LocalDateTime fechaCreacion = LocalDateTime.now();
-    @Embedded
-    private User autor;
-    private Boolean solucion = false;
+
 }

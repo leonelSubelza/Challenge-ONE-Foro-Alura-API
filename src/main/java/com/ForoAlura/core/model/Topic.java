@@ -1,6 +1,8 @@
 package com.ForoAlura.core.model;
 
-import com.ForoAlura.core.dto.TopicRegisterDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,14 +26,20 @@ public class Topic {
     @Enumerated(EnumType.STRING)
     private StatusTopico status=StatusTopico.NO_RESPONDIDO;
 
-    @Embedded//quiere decir que el obj autor se guardará dentro de la tabla topic
-    private User autor;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)//muchos topicos pertenecen a un solo curso
-    private Course curso;
+    //@Embedded//quiere decir que el obj autor se guardará dentro de la tabla topic
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIgnore
+//    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
+    private Autors autor;
 
     //un topico tiene muchas respuestas
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "topico", cascade = CascadeType.ALL)
     private List<Response> respuestas;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)//muchos topicos pertenecen a un solo curso
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIgnore
+//    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
+    private Course curso;
 }
