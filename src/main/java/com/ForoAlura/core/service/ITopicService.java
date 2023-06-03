@@ -7,7 +7,7 @@ import com.ForoAlura.core.model.Topic;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface IForoService {
+public interface ITopicService {
     public TopicRegisterResponse create(TopicRegisterDTO topic);
 
     public Topic update(Topic topic);

@@ -1,8 +1,6 @@
 package com.ForoAlura.core.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,7 +28,7 @@ public class Response {
 //    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
     @JsonIgnore
 //    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Autors autor;
+    private Author autor;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)//muchas respuestas pertenecen a un solo topico
 //    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

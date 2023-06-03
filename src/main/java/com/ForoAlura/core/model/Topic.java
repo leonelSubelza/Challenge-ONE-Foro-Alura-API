@@ -1,8 +1,6 @@
 package com.ForoAlura.core.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,7 +29,7 @@ public class Topic {
 //    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JsonIgnore
 //    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
-    private Autors autor;
+    private Author autor;
 
     //un topico tiene muchas respuestas
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "topico", cascade = CascadeType.ALL)
