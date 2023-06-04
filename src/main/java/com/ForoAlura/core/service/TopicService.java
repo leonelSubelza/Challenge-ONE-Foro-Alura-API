@@ -13,8 +13,6 @@ import com.ForoAlura.core.model.Topic;
 import com.ForoAlura.core.repository.IAuthorRepository;
 import com.ForoAlura.core.repository.ICourseRepository;
 import com.ForoAlura.core.repository.ITopicRepository;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,7 +20,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 public class TopicService implements ITopicService {
@@ -63,9 +60,12 @@ public class TopicService implements ITopicService {
     public TopicRegisterResponse update(Long id,TopicRegisterDTO topicRegisterDTO) {
         Topic topic = this.topicRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Topico","Id",id));
-//        private String titulo;
-//        private String mensaje;
-        //FIJARSE QUE QUIZAS SE PUEDE LLEGAR A ACT EL AUTOR Y EL CURSO
+        Course cursoAsociado = this.courseRepository.findById(topicRegisterDTO.getCursoId())
+                .orElseThrow(() -> new ResourceNotFoundException("Curso","Id",topicRegisterDTO.getCursoId()));
+        Author autorAsociado = this.authorRepository.findById(topicRegisterDTO.getAutorId())
+                .orElseThrow(() -> new ResourceNotFoundException("Autor","Id",topicRegisterDTO.getAutorId()));
+        topic.setCurso(cursoAsociado);
+        topic.setAutor(autorAsociado);
         topic.setTitulo(topicRegisterDTO.getTitulo());
         topic.setMensaje(topicRegisterDTO.getMensaje());
         return createTopicRegisterResponse(this.topicRepository.save(topic));
