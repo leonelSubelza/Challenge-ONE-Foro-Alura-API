@@ -10,9 +10,9 @@ import org.springframework.data.domain.Pageable;
 public interface ITopicService {
     public TopicRegisterResponse create(TopicRegisterDTO topic);
 
-    public Topic update(Topic topic);
+    public TopicRegisterResponse update(Long id,TopicRegisterDTO topicRegisterDTO);
 
-    public Topic findById(Long id);
+    public TopicRegisterResponse findById(Long id);
 
     public Page<TopicResponseDTO> findAll(Pageable pageable);
 

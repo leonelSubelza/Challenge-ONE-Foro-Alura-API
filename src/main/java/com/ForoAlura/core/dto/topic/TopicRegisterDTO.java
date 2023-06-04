@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TopicRegisterDTO {
-    @NotBlank
+    @NotBlank(message = "El título no puede ser nulo")
     private String titulo;
-    @NotBlank
+    @NotBlank(message = "El mensaje no puede ser nulo")
     private String mensaje;
-    @NotNull
+    @NotNull(message = "El autor no puede ser nulo")
     private Long autorId;
-    @NotNull
+    @NotNull(message = "El curso no puede ser nulo")
     private Long cursoId;
 }

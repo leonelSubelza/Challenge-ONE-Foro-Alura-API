@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ITopicRepository extends JpaRepository<Topic,Long> {
-    Page<Topic> findAllByOrderByFechaCreacionAsc(Pageable pageable);
+    Page<Topic> findAllByOrderByFechaCreacionDesc(Pageable pageable);
 }

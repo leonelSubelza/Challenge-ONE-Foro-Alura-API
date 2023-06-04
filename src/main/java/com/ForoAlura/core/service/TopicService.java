@@ -13,6 +13,8 @@ import com.ForoAlura.core.model.Topic;
 import com.ForoAlura.core.repository.IAuthorRepository;
 import com.ForoAlura.core.repository.ICourseRepository;
 import com.ForoAlura.core.repository.ITopicRepository;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -57,6 +59,38 @@ public class TopicService implements ITopicService {
         return createTopicRegisterResponse(topicoCreado);
     }
 
+    @Override
+    public TopicRegisterResponse update(Long id,TopicRegisterDTO topicRegisterDTO) {
+        Topic topic = this.topicRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Topico","Id",id));
+//        private String titulo;
+//        private String mensaje;
+        //FIJARSE QUE QUIZAS SE PUEDE LLEGAR A ACT EL AUTOR Y EL CURSO
+        topic.setTitulo(topicRegisterDTO.getTitulo());
+        topic.setMensaje(topicRegisterDTO.getMensaje());
+        return createTopicRegisterResponse(this.topicRepository.save(topic));
+    }
+
+    @Override
+    public TopicRegisterResponse findById(Long id) {
+        Topic topic = this.topicRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Topico","Id",id));
+        return createTopicRegisterResponse(topic);
+    }
+
+    @Override
+    public Page<TopicResponseDTO> findAll(Pageable pageable) {
+        Page<Topic> topicsPage = topicRepository.findAllByOrderByFechaCreacionDesc(pageable);
+//        Page<Topic> topicsPage = iForoRepository.findAll(pageable);
+        return topicsPage.map(topicPage -> this.modelMapper.map(topicPage,TopicResponseDTO.class));
+    }
+
+    @Override
+    public void delete(Long id) {
+        this.topicRepository.deleteById(id);
+    }
+
+
     private TopicRegisterResponse createTopicRegisterResponse(Topic topicoCreado) {
         return new TopicRegisterResponse(
                 topicoCreado.getId(),
@@ -70,29 +104,6 @@ public class TopicService implements ITopicService {
                 new CourseResponse(topicoCreado.getCurso().getId(),
                         topicoCreado.getCurso().getNombre(),
                         topicoCreado.getCurso().getCategoria()));
-    }
-
-    @Override
-    public Topic update(Topic topic) {
-        return this.topicRepository.save(topic);
-    }
-
-    @Override
-    public Topic findById(Long id) {
-        Optional<Topic> topicOptional = this.topicRepository.findById(id);
-        return topicOptional.orElse(null);
-    }
-
-    @Override
-    public Page<TopicResponseDTO> findAll(Pageable pageable) {
-        Page<Topic> topicsPage = topicRepository.findAllByOrderByFechaCreacionAsc(pageable);
-//        Page<Topic> topicsPage = iForoRepository.findAll(pageable);
-        return topicsPage.map(topicPage -> this.modelMapper.map(topicPage,TopicResponseDTO.class));
-    }
-
-    @Override
-    public void delete(Long id) {
-        this.topicRepository.deleteById(id);
     }
 
 //    public TopicResponseDTO mapTopicToTopicResponseDTO(Topic topic){
