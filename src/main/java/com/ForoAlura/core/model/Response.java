@@ -20,8 +20,8 @@ public class Response {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String mensaje;
-    private LocalDateTime fechaCreacion = LocalDateTime.now();
-    private Boolean solucion = false;
+    private LocalDateTime fechaCreacion;
+    private Boolean solucion;
 
     //muchas respuestas pertenecen a un solo autor
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -36,5 +36,14 @@ public class Response {
 //    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
     private Topic topico;
 
+    @PrePersist
+    public void prePersist() {
+        if (fechaCreacion == null) {
+            fechaCreacion = LocalDateTime.now();
+        }
 
+        if (solucion == null) {
+            solucion = false;
+        }
+    }
 }

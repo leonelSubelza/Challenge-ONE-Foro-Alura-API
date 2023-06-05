@@ -1,5 +1,10 @@
 package com.ForoAlura.core.service;
 
+import com.ForoAlura.core.dto.author.AuthorResponseDTO;
+import com.ForoAlura.core.dto.course.CourseResponseDTO;
+import com.ForoAlura.core.dto.response.ResponseReturnDTO;
+import com.ForoAlura.core.dto.response.ResponseReturnDetailedDTO;
+import com.ForoAlura.core.dto.topic.TopicDetailedDTO;
 import com.ForoAlura.core.dto.topic.TopicRegister;
 import com.ForoAlura.core.dto.topic.TopicRegisterResponseDTO;
 import com.ForoAlura.core.dto.topic.TopicResponseDTO;
@@ -15,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.stream.Collectors;
 
 @Service
 public class TopicService implements ITopicService {
@@ -39,11 +46,19 @@ public class TopicService implements ITopicService {
     }
 
     @Override
-    public TopicRegisterResponseDTO findById(Long id) {
+    public TopicDetailedDTO findById(Long id) {
         Topic topic = this.topicRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Topico","Id",id));
-//AL PARECER MODELMAPPER MAPEA LOS OBJETOS AUTHORDTO Y COURSEDTO TAMBIEN DENTRO DEL OBJETO TopicRegisterResponseDTO :OO
-        return this.modelMapper.map(topic,TopicRegisterResponseDTO.class);
+        return TopicDetailedDTO.builder()
+                .id(topic.getId())
+                .titulo(topic.getTitulo())
+                .mensaje(topic.getMensaje())
+                .fechaCreacion(topic.getFechaCreacion())
+                .status(topic.getStatus()).autor(this.modelMapper.map(topic.getAutor(), AuthorResponseDTO.class))
+                .curso(this.modelMapper.map(topic.getCurso(), CourseResponseDTO.class))
+                .respuestas(topic.getRespuestas().stream().map(
+                        r -> this.modelMapper.map(r, ResponseReturnDTO.class)).collect(Collectors.toList()))
+                .build();
     }
 
     @Override
@@ -69,7 +84,7 @@ public class TopicService implements ITopicService {
         Author autorAsociado = this.authorRepository.findById(topic.autorId())
                 .orElseThrow(() -> new ResourceNotFoundException("Autor","Id",topic.autorId()));
 
-        //convertimos de TopicRegister -> Topic
+        //convertimos de TopicRegister -> Topic (no usamos modelMapper porque hay que setear los obj curso y autor
         Topic topicoCreado = this.topicRepository.save(Topic.builder()
                 .titulo(topic.titulo())
                 .mensaje(topic.mensaje())
@@ -82,6 +97,8 @@ public class TopicService implements ITopicService {
 
     @Override
     public void delete(Long id) {
+        Topic topic = this.topicRepository.findById(id)
+                .orElseThrow(()->new ResourceNotFoundException("Tópico","id",id));
         this.topicRepository.deleteById(id);
     }
 

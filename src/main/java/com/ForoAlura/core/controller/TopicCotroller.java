@@ -1,5 +1,6 @@
 package com.ForoAlura.core.controller;
 
+import com.ForoAlura.core.dto.topic.TopicDetailedDTO;
 import com.ForoAlura.core.dto.topic.TopicRegister;
 import com.ForoAlura.core.dto.topic.TopicRegisterResponseDTO;
 import com.ForoAlura.core.dto.topic.TopicResponseDTO;
@@ -38,7 +39,7 @@ public class TopicCotroller {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TopicRegisterResponseDTO> detailTopic(@PathVariable(value = "id") @NotNull Long id){
+    public ResponseEntity<TopicDetailedDTO> detailTopic(@PathVariable(value = "id") @NotNull Long id){
         return ResponseEntity.ok(this.topicService.findById(id));
     }
 
