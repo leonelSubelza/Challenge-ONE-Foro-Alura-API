@@ -73,7 +73,7 @@ public class TopicService implements ITopicService {
         topic.setAutor(autorAsociado);
         topic.setTitulo(topicRegister.titulo());
         topic.setMensaje(topicRegister.mensaje());
-        return this.modelMapper.map(topic,TopicRegisterResponseDTO.class);
+        return this.modelMapper.map(this.topicRepository.save(topic),TopicRegisterResponseDTO.class);
 //        return createTopicRegisterResponse(this.topicRepository.save(topic));
     }
 
