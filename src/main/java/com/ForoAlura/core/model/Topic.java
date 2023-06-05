@@ -21,10 +21,10 @@ public class Topic {
     private Long id;
     private String titulo;
     private String mensaje;
-    private LocalDateTime fechaCreacion = LocalDateTime.now();
+    private LocalDateTime fechaCreacion;
 
     @Enumerated(EnumType.STRING)
-    private StatusTopico status=StatusTopico.NO_RESPONDIDO;
+    private StatusTopico status;
 
     //@Embedded//quiere decir que el obj autor se guardará dentro de la tabla topic
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -42,5 +42,18 @@ public class Topic {
     @JsonIgnore
 //    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
     private Course curso;
+
+    //esto se ejecutará antes de guardar la entidad en la bd
+    @PrePersist
+    public void prePersist() {
+        if (fechaCreacion == null) {
+            fechaCreacion = LocalDateTime.now();
+        }
+
+        if (status == null) {
+            status = StatusTopico.NO_RESPONDIDO;
+        }
+    }
+
 
 }

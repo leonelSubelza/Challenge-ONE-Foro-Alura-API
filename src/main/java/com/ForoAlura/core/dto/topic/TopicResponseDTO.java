@@ -1,5 +1,6 @@
 package com.ForoAlura.core.dto.topic;
 
+import com.ForoAlura.core.model.StatusTopico;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
@@ -17,9 +18,8 @@ public class TopicResponseDTO {
     private String titulo;
     private String mensaje;
     private LocalDateTime fechaCreacion;
-    //esto ya no va :/
-//    @Enumerated(EnumType.STRING)
-//    private StatusTopico status;
+    @Enumerated(EnumType.STRING)
+    private StatusTopico status;
 //    private AutorResponseDTO autor;
 //    private CourseResponseDTO curso;
 }

@@ -1,7 +1,7 @@
 package com.ForoAlura.core.controller;
 
-import com.ForoAlura.core.dto.topic.TopicRegisterDTO;
-import com.ForoAlura.core.dto.topic.TopicRegisterResponse;
+import com.ForoAlura.core.dto.topic.TopicRegister;
+import com.ForoAlura.core.dto.topic.TopicRegisterResponseDTO;
 import com.ForoAlura.core.dto.topic.TopicResponseDTO;
 import com.ForoAlura.core.service.ITopicService;
 import jakarta.validation.Valid;
@@ -37,24 +37,24 @@ public class TopicCotroller {
         return ResponseEntity.ok(this.topicService.findAll(pageable));
     }
 
-    @PostMapping
-    public ResponseEntity<TopicRegisterResponse> register(@RequestBody @Valid TopicRegisterDTO datosRegistro,
-                                                          UriComponentsBuilder uriComponentsBuilder){
-        TopicRegisterResponse response =this.topicService.create(datosRegistro);
-        //esta URL irá asociada en el encabezado de respuesta location
-        URI url = uriComponentsBuilder.path("/topico/{id}").buildAndExpand(response.id()).toUri();
-        return ResponseEntity.created(url).body(response);
-    }
-
     @GetMapping("/{id}")
-    public ResponseEntity<TopicRegisterResponse> detailTopic(@PathVariable(value = "id") @NotNull Long id){
+    public ResponseEntity<TopicRegisterResponseDTO> detailTopic(@PathVariable(value = "id") @NotNull Long id){
         return ResponseEntity.ok(this.topicService.findById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TopicRegisterResponse> update(@RequestBody @Valid TopicRegisterDTO datosRegistro,
-                                                        @PathVariable(value = "id") Long id){
+    public ResponseEntity<TopicRegisterResponseDTO> update(@RequestBody @Valid TopicRegister datosRegistro,
+                                                           @PathVariable(value = "id") Long id){
         return ResponseEntity.ok(this.topicService.update(id,datosRegistro));
+    }
+
+    @PostMapping
+    public ResponseEntity<TopicRegisterResponseDTO> register(@RequestBody @Valid TopicRegister datosRegistro,
+                                                             UriComponentsBuilder uriComponentsBuilder){
+        TopicRegisterResponseDTO response =this.topicService.create(datosRegistro);
+        //esta URL irá asociada en el encabezado de respuesta location
+        URI url = uriComponentsBuilder.path("/topico/{id}").buildAndExpand(response.getId()).toUri();
+        return ResponseEntity.created(url).body(response);
     }
 
     @DeleteMapping("/{id}")
@@ -62,5 +62,4 @@ public class TopicCotroller {
         this.topicService.delete(topicId);
         return new ResponseEntity<>("Tópico eliminado con éxito", HttpStatus.OK);
     }
-
 }
