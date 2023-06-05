@@ -57,7 +57,7 @@ public class ResponseService implements IResponseService{
         response.setMensaje(responseRegister.mensaje());
         response.setAutor(autorAsociado);
         response.setTopico(topicoAsociado);
-        return this.modelMapper.map(response, ResponseReturnDetailedDTO.class);
+        return this.modelMapper.map(this.responseRepository.save(response), ResponseReturnDetailedDTO.class);
     }
 
     @Override
