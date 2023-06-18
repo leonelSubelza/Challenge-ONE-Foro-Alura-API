@@ -5,6 +5,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ITopicRepository extends JpaRepository<Topic,Long> {
+import java.util.Optional;
+
+public interface TopicRepository extends JpaRepository<Topic,Long> {
     Page<Topic> findAllByOrderByFechaCreacionDesc(Pageable pageable);
+
+    Optional<Topic> findByTitulo(String titulo);
+    Optional<Topic> findByMensaje(String mensaje);
+
 }

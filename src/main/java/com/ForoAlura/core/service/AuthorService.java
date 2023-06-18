@@ -7,20 +7,19 @@ import com.ForoAlura.core.dto.response.ResponseReturnDTO;
 import com.ForoAlura.core.dto.topic.TopicResponseDTO;
 import com.ForoAlura.core.exceptions.ResourceNotFoundException;
 import com.ForoAlura.core.model.Author;
-import com.ForoAlura.core.repository.IAuthorRepository;
+import com.ForoAlura.core.repository.AuthorRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class AuthorService implements IAuthorService{
     @Autowired
-    private IAuthorRepository authorRepository;
+    private AuthorRepository authorRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -55,12 +54,10 @@ public class AuthorService implements IAuthorService{
         //aca abria que desencriptar la contraseña
         author.setContrasena(topicRegisterDTO.contrasena());
         return modelMapper.map(authorRepository.save(author),AuthorResponseDTO.class);
-
     }
 
     @Override
     public AuthorResponseDTO create(AuthorRegister topic) {
-        System.out.println("objeto recibido: "+topic);
         Author author = authorRepository.save(Author.builder()
                 .nombre(topic.nombre())
                 .email(topic.email())

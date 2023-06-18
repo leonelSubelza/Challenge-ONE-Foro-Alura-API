@@ -3,18 +3,18 @@ package com.ForoAlura.core.service;
 import com.ForoAlura.core.dto.author.AuthorResponseDTO;
 import com.ForoAlura.core.dto.course.CourseResponseDTO;
 import com.ForoAlura.core.dto.response.ResponseReturnDTO;
-import com.ForoAlura.core.dto.response.ResponseReturnDetailedDTO;
 import com.ForoAlura.core.dto.topic.TopicDetailedDTO;
 import com.ForoAlura.core.dto.topic.TopicRegister;
 import com.ForoAlura.core.dto.topic.TopicRegisterResponseDTO;
 import com.ForoAlura.core.dto.topic.TopicResponseDTO;
+import com.ForoAlura.core.exceptions.ConstraintViolationException;
 import com.ForoAlura.core.exceptions.ResourceNotFoundException;
 import com.ForoAlura.core.model.Author;
 import com.ForoAlura.core.model.Course;
 import com.ForoAlura.core.model.Topic;
-import com.ForoAlura.core.repository.IAuthorRepository;
-import com.ForoAlura.core.repository.ICourseRepository;
-import com.ForoAlura.core.repository.ITopicRepository;
+import com.ForoAlura.core.repository.AuthorRepository;
+import com.ForoAlura.core.repository.CourseRepository;
+import com.ForoAlura.core.repository.TopicRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,13 +27,13 @@ import java.util.stream.Collectors;
 public class TopicService implements ITopicService {
 
     @Autowired
-    private ITopicRepository topicRepository;
+    private TopicRepository topicRepository;
 
     @Autowired
-    private IAuthorRepository authorRepository;
+    private AuthorRepository authorRepository;
 
     @Autowired
-    private ICourseRepository courseRepository;
+    private CourseRepository courseRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -62,19 +62,36 @@ public class TopicService implements ITopicService {
     }
 
     @Override
-    public TopicRegisterResponseDTO update(Long id, TopicRegister topicRegister) {
+    public TopicRegisterResponseDTO update(Long id, TopicRegister topicRegister) throws ConstraintViolationException {
         Topic topic = this.topicRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Topico","Id",id));
         Course cursoAsociado = this.courseRepository.findById(topicRegister.cursoId())
                 .orElseThrow(() -> new ResourceNotFoundException("Curso","Id",topicRegister.cursoId()));
         Author autorAsociado = this.authorRepository.findById(topicRegister.autorId())
                 .orElseThrow(() -> new ResourceNotFoundException("Autor","Id",topicRegister.autorId()));
+
+        //si existe ya un tópico con el mismo título que no sea el mismo que queremos actualizar
+        this.topicRepository.findByTitulo(topicRegister.titulo())
+                .ifPresent(t -> {
+                    if(!t.getId().equals(topic.getId())){
+                        throw new ConstraintViolationException("Topico",
+                                "Titulo",topicRegister.titulo());
+                    }
+
+                });
+        this.topicRepository.findByMensaje(topicRegister.mensaje())
+                .ifPresent(t -> {
+                    if(!t.getId().equals(topic.getId())){
+                        throw new ConstraintViolationException("Topico",
+                                "Mensaje",topicRegister.mensaje());
+                    }
+                });
+
         topic.setCurso(cursoAsociado);
         topic.setAutor(autorAsociado);
         topic.setTitulo(topicRegister.titulo());
         topic.setMensaje(topicRegister.mensaje());
         return this.modelMapper.map(this.topicRepository.save(topic),TopicRegisterResponseDTO.class);
-//        return createTopicRegisterResponse(this.topicRepository.save(topic));
     }
 
     @Override

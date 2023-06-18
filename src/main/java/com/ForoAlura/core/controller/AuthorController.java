@@ -17,7 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/autores")
+@RequestMapping("/api/autores")
 public class AuthorController {
     @Autowired
     private IAuthorService authorService;

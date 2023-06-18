@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -20,7 +21,7 @@ import java.net.URI;
 
 
 @RestController
-@RequestMapping("/topicos")
+@RequestMapping("/api/topicos")
 public class TopicCotroller {
 
     @Autowired
@@ -43,12 +44,14 @@ public class TopicCotroller {
         return ResponseEntity.ok(this.topicService.findById(id));
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PutMapping("/{id}")
     public ResponseEntity<TopicRegisterResponseDTO> update(@RequestBody @Valid TopicRegister datosRegistro,
                                                            @PathVariable(value = "id") Long id){
         return ResponseEntity.ok(this.topicService.update(id,datosRegistro));
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping
     public ResponseEntity<TopicRegisterResponseDTO> register(@RequestBody @Valid TopicRegister datosRegistro,
                                                              UriComponentsBuilder uriComponentsBuilder){
@@ -58,6 +61,7 @@ public class TopicCotroller {
         return ResponseEntity.created(url).body(response);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable(value = "id") Long topicId){
         this.topicService.delete(topicId);

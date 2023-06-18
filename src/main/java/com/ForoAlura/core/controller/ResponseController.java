@@ -16,7 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/respuestas")
+@RequestMapping("/api/respuestas")
 public class ResponseController {
 
     @Autowired

@@ -6,9 +6,9 @@ import com.ForoAlura.core.exceptions.ResourceNotFoundException;
 import com.ForoAlura.core.model.Author;
 import com.ForoAlura.core.model.Response;
 import com.ForoAlura.core.model.Topic;
-import com.ForoAlura.core.repository.IAuthorRepository;
-import com.ForoAlura.core.repository.IResponseRepository;
-import com.ForoAlura.core.repository.ITopicRepository;
+import com.ForoAlura.core.repository.AuthorRepository;
+import com.ForoAlura.core.repository.ResponseRepository;
+import com.ForoAlura.core.repository.TopicRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,13 +20,13 @@ import  org.springframework.data.domain.Pageable;
 public class ResponseService implements IResponseService{
 
     @Autowired
-    private IResponseRepository responseRepository;
+    private ResponseRepository responseRepository;
 
     @Autowired
-    private ITopicRepository topicRepository;
+    private TopicRepository topicRepository;
 
     @Autowired
-    private IAuthorRepository authorRepository;
+    private AuthorRepository authorRepository;
 
     @Autowired
     private ModelMapper modelMapper;
