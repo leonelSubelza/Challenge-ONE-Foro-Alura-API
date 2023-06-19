@@ -39,6 +39,7 @@
 			<scope>provided</scope>
 		</dependency>
 		-->
+
 		<!--Dependencia para validar entidades que llegan del cliente-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -101,12 +102,24 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<!--Dependencia que debería reiniciar el proyecto automáticamente ante cada cambio-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+
+		<!--Swagger-->
+
+		<!--Al parecer necesita esta dependencia y spring validation-->
+		<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.0.4</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

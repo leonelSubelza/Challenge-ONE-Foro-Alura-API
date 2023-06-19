@@ -31,12 +31,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 //  detalles del usuario. Esto ocurre por cada request que haga el usuario antes de que entre al controller
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println("se ejecuta el filtro de cada request");
-
         //Se carga el token
         String token = obtenerJWTDeLaSolicitud(request);
         if(SecurityContextHolder.getContext().getAuthentication() != null || !StringUtils.hasText(token) ){
-            System.out.println("la request ya estaba autenticada o no habia token, se sigue con el siguiente filtro");
             filterChain.doFilter(request,response);
             return;
         }

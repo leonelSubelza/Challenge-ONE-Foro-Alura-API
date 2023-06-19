@@ -69,9 +69,10 @@ public class SecurityConfig {
                 .and()
 //               las solicitudes HTTP GET a /api/** y /api/auth/** están permitidas sin autenticación.
                 .authorizeHttpRequests()
+                .requestMatchers(AUTH_WHITELIST).permitAll()
+                .requestMatchers("/").permitAll()
                 .requestMatchers(HttpMethod.GET,"/api/**")
                 .permitAll()
-
                 .requestMatchers("/api/auth/**")
                 .permitAll()
 //               Cualquier otra solicitud debe estar autenticada para acceder a los recursos.
@@ -82,6 +83,15 @@ public class SecurityConfig {
                 .addFilterBefore(this.jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
+    //se crean path en white list para swagger
+    private static final String[] AUTH_WHITELIST = {
+            "/api/v1/auth/**",
+            "/v3/api-docs/**",
+            "/v3/api-docs.yaml",
+            "/swagger-ui/**",
+            "/swagger-ui.html"
+    };
 
     //este bean carga en memoria de spring los usuarios que posee la api para autenticar
     /*
